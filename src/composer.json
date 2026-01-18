@@ -1,0 +1,19 @@
+{
+    "name": "app/debri-project",
+    "description": "PHP Application with BladeOne and Monolog",
+    "type": "project",
+    "autoload": {
+        "psr-4": {
+            "App\\": "App/",
+            "Core\\": "Core/"
+        }
+    },
+    "require": {
+        "eftec/bladeone": "^4.19",
+        "monolog/monolog": "^3.10"
+    },
+    "config": {
+        "optimize-autoloader": true,
+        "sort-packages": true
+    }
+}

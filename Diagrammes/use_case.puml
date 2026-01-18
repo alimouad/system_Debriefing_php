@@ -1,0 +1,135 @@
+@startuml
+left to right direction
+
+' ===== Acteurs =====
+actor User
+actor Admin
+actor Formateur
+actor Etudiant
+
+User <|-- Admin
+User <|-- Formateur
+User <|-- Etudiant
+
+' ===== Système =====
+rectangle "Débriefing" {
+
+    ' --- Authentification ---
+    usecase "Authentification" as UC_Auth
+    usecase "Login" as UC_Login
+    usecase "Logout" as UC_Logout
+
+    UC_Login ..> UC_Auth : <<include>>
+    UC_Logout ..> UC_Auth : <<include>>
+
+    User -- UC_Login
+    User -- UC_Logout
+
+
+    ' --- Administration ---
+    usecase "Gestion globale" as UC_GestionGlobale
+    usecase "Gestion des données" as UC_GestionData
+    usecase "Configuration" as UC_Config
+
+    Admin -- UC_GestionGlobale
+    Admin -- UC_GestionData
+    Admin -- UC_Config
+
+
+    ' --- Configuration ---
+    usecase "Gestion des classes" as UC_Class
+    usecase "Gestion des sprints" as UC_Sprint
+    usecase "Gestion des compétences" as UC_Comp
+
+    UC_Config ..> UC_Class : <<include>>
+    UC_Config ..> UC_Sprint : <<include>>
+    UC_Config ..> UC_Comp : <<include>>
+
+    usecase "Ajouter classe" as UC_AddClass
+    usecase "Modifier classe" as UC_ModClass
+    usecase "Supprimer classe" as UC_DelClass
+
+    UC_Class ..> UC_AddClass : <<include>>
+    UC_Class ..> UC_ModClass : <<include>>
+    UC_Class ..> UC_DelClass : <<include>>
+
+    usecase "Ajouter sprint" as UC_AddSprint
+    usecase "Modifier sprint" as UC_ModSprint
+    usecase "Supprimer sprint" as UC_DelSprint
+
+    UC_Sprint ..> UC_AddSprint : <<include>>
+    UC_Sprint ..> UC_ModSprint : <<include>>
+    UC_Sprint ..> UC_DelSprint : <<include>>
+
+    usecase "Ajouter compétence" as UC_AddComp
+    usecase "Modifier compétence" as UC_ModComp
+    usecase "Supprimer compétence" as UC_DelComp
+
+    UC_Comp ..> UC_AddComp : <<include>>
+    UC_Comp ..> UC_ModComp : <<include>>
+    UC_Comp ..> UC_DelComp : <<include>>
+
+
+    ' --- Gestion formateurs ---
+    usecase "Gestion des formateurs" as UC_Formateur
+    usecase "Assigner formateur à une classe" as UC_AssignTeach
+
+    UC_GestionGlobale ..> UC_Formateur : <<include>>
+    UC_GestionGlobale ..> UC_AssignTeach : <<include>>
+
+
+    ' --- Formateur ---
+    usecase "Gestion des étudiants" as UC_Etudiant
+    usecase "Gestion des briefs" as UC_Brief
+    usecase "Gestion du débriefing" as UC_Debrief
+
+    Formateur -- UC_Etudiant
+    Formateur -- UC_Brief
+    Formateur -- UC_Debrief
+
+    usecase "Ajouter étudiant" as UC_AddEtu
+    usecase "Modifier étudiant" as UC_ModEtu
+    usecase "Supprimer étudiant" as UC_DelEtu
+
+    UC_Etudiant ..> UC_AddEtu : <<include>>
+    UC_Etudiant ..> UC_ModEtu : <<include>>
+    UC_Etudiant ..> UC_DelEtu : <<include>>
+
+    usecase "Ajouter brief" as UC_AddBrief
+    usecase "Modifier brief" as UC_ModBrief
+    usecase "Supprimer brief" as UC_DelBrief
+    usecase "Assigner compétences au brief" as UC_AssignComp
+    usecase "Définir niveau des compétences" as UC_LevelComp
+
+    UC_Brief ..> UC_AddBrief : <<include>>
+    UC_Brief ..> UC_ModBrief : <<include>>
+    UC_Brief ..> UC_DelBrief : <<include>>
+    UC_ModBrief ..> UC_AssignComp : <<include>>
+    UC_ModBrief ..> UC_LevelComp : <<include>>
+
+
+    ' --- Débriefing ---
+    usecase "Noter les briefs" as UC_Grade
+    usecase "Valider les compétences" as UC_ValidComp
+    usecase "Envoyer résultats" as UC_SendGrades
+    usecase "Envoyer message" as UC_Message
+    usecase "Évaluer compétences" as UC_EvalComp
+
+    UC_Debrief ..> UC_Grade : <<include>>
+    UC_Debrief ..> UC_ValidComp : <<include>>
+    UC_Debrief ..> UC_SendGrades : <<include>>
+    UC_Debrief ..> UC_Message : <<include>>
+    UC_Debrief ..> UC_EvalComp : <<include>>
+
+
+    ' --- Étudiant ---
+    usecase "Consulter notes" as UC_SeeGrades
+    usecase "Consulter briefs" as UC_SeeBrief
+    usecase "Livrer un projet" as UC_SendProject
+
+    Etudiant -- UC_SeeGrades
+    Etudiant -- UC_SeeBrief
+    Etudiant -- UC_SendProject
+}
+
+@enduml

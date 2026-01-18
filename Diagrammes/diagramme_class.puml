@@ -1,0 +1,112 @@
+@startuml
+skinparam style strictuml
+skinparam classAttributeIconSize 0
+
+' --- Abstract Class and Users ---
+abstract class User {
+    # id : int
+    # last_name : string
+    # first_name : string
+    # email : string
+    # password : string
+    # created_at : date
+}
+
+class Admin {
+    role:UserRole
+}
+
+class Teacher {
+      role:UserRole
+}
+
+class Student {
+    role:UserRole
+}
+ enum UserRole{
+        ADMIN,
+        TEACHER,
+        STUDENT
+}
+
+' Inheritance
+User <|-- Admin
+User <|-- Teacher
+User <|-- Student
+
+Admin -- UserRole
+Teacher -- UserRole
+Student -- UserRole
+
+
+' --- Pedagogical Structure ---
+class Classroom {
+    - id : int
+    - name : string
+    - year : string
+}
+
+class Sprint {
+    - id : int
+    - name : string
+    - description : string
+    - duration : string
+    - order : int
+}
+
+class Brief {
+    - id : int
+    - title : string
+    - description : text
+    - estimatedDuration : string
+    - type : BriefType
+}
+
+enum BriefType {
+    INDIVIDUAL
+    COLLECTIVE
+}
+
+class Skill {
+    - id : int
+    - code : string
+    - label : string
+}
+
+' --- Evaluation and History ---
+class Evaluation {
+    - id : int
+    - level : MasteryLevel
+    - comment : text
+    - evaluation_date : date
+}
+
+
+
+enum MasteryLevel {
+    IMITATE
+    ADAPT
+    TRANSPOSE
+}
+
+' --- Relationships ---
+Admin "1" --> "*" User : manages >
+Admin "1" --> "*" Classroom : configures >
+Admin "1" --> "*" Sprint : organizes >
+Admin "1" --> "*" Skill : organizes >
+
+Classroom "1" *-- "*" Sprint : contains >
+Sprint "1" *-- "*" Brief : contains >
+
+Brief "*" -- "*" Skill : targets >
+
+Teacher "*" -- "*" Classroom : supervises >
+Teacher "1" -- "*" Brief : organizes >
+Student "*" -- "1" Classroom : belongs to >
+
+Evaluation "*" -- "1" Student : concerns >
+Evaluation "*" -- "1" Brief : linked to >
+Evaluation "*" -- "1" Skill : assesses >
+Evaluation "*" -- "1" Teacher : performed by >
+
+@enduml
