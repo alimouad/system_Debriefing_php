@@ -1,18 +1,13 @@
 <?php
 
 namespace App\Models;
+use App\Enums\UserRole;
+use App\Models\User;
 
-class Teacher extends User {
-    private string $role;
+class Teacher extends User{
+    private $role = UserRole::TEACHER->value;
 
-    public function __construct($id, $first_name, $last_name, $email)
-    {
-        parent::__construct($id, $first_name, $last_name, $email);
-        $this->role='teacher';
-    }
-
-    public function get_role(){
+    public function role(): string{
         return $this->role;
     }
-
 }

@@ -1,35 +1,20 @@
 <?php
 
-namespace App\Models;
+class Evaluation{
+    private $id;
+    private $level;
+    private $comment;
+    private $evaluated_at;
 
-class Evaluation {
-    private int $id;
-    private string $level;
-    private string $review;
-    private string $comment;
-    private string $date;
-    public function __construct($id,$level,$review,$comment,$date) {
-        $this->id=$id;
-        $this->level=$level;
-        $this->review=$review;
-        $this->comment=$comment;
-        $this->date=$date;
+    public function __construct($id, $level, $comment, $evaluated_at){
+        $this->id = $id;
+        $this->level = $level;
+        $this->comment = $comment;
+        $this->evaluated_at = $evaluated_at;
     }
 
-    public function get_id(){
-        return $this->id;
+    public function __get($name)
+    {
+        return $this->{$name} ?? null;
     }
-    public function get_level(){
-        return $this->level;
-    }
-    public function get_review(){
-        return $this->review;
-    }
-    public function get_comment(){
-        return $this->comment;
-    }
-    public function get_date(){
-        return $this->date;
-    }
-
 }

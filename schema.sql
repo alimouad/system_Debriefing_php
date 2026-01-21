@@ -26,14 +26,15 @@ CREATE TABLE users (
 );
 
 -- 4. PEDAGOGICAL STRUCTURE
+
 CREATE TABLE sprints (
     id SERIAL PRIMARY KEY,
-    name VARCHAR(100) NOT NULL,
-    duration VARCHAR(50),
-    chronological_order INT NOT NULL,
-    classroom_id INT NOT NULL,
-    CONSTRAINT fk_sprint_classroom FOREIGN KEY (classroom_id) 
-        REFERENCES classrooms(id) ON DELETE CASCADE
+    title VARCHAR(255) NOT NULL,
+    description VARCHAR(500) NOT NULL,
+    classroom_id INT REFERENCES classrooms(id),
+    start_date DATE NOT NULL,
+    end_date DATE NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 CREATE TABLE briefs (

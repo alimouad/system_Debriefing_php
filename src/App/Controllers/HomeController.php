@@ -10,7 +10,7 @@ class HomeController extends Controller
     public function index()
     {
         
-        $this->render('admin/articles/index', 'layout_main', [ ]);
+        $this->render('auth/login.view', 'layout_main', [ ]);
     }
 
 

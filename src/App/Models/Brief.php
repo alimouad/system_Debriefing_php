@@ -1,34 +1,36 @@
 <?php
-
 namespace App\Models;
 
-class Brief {
-    private int $id;
-    private int $title;
-    private int $description;
-    private int $date_remise;
-    private int $type;
-    public function __construct($id,$title,$description,$date_remise,$type)
-    {
-        $this->id=$id;
-        $this->title=$title;
-        $this->description=$description;
-        $this->date_remise=$date_remise;
-        $this->type=$type;
+class Brief{
+    private $id;
+    private $title;
+    private $description;
+    private $duration;
+    private $type ;
+
+    public function __construct($id, $title, $description, $duration, $type){
+        $this->id = $id;
+        $this->title = $title;
+        $this->description = $description;
+        $this->duration = $duration;
+        $this->type = $type;
     }
-    public function get_id(){
+
+    public function getId(){
         return $this->id;
     }
-    public function get_title(){
+
+    public function getTitle(){
         return $this->title;
     }
-    public function get_description(){
+
+    public function getdescription(){
         return $this->description;
     }
-    public function get_date_remise(){
-        return $this->date_remise;
+    public function getDuration(){
+        return $this->duration;
     }
-    public function get_type(){
+    public function getType(){
         return $this->type;
     }
 }

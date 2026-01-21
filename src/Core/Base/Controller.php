@@ -8,7 +8,7 @@ class Controller
     {
         extract($data);
 
-        $viewFile = __DIR__ . '/../../Views/' . $view . '.php';
+        $viewFile = __DIR__ . '/../../App/Views/' . $view . '.php';
 
         if (!file_exists($viewFile)) {
             die("View not found: {$viewFile}");
@@ -16,7 +16,7 @@ class Controller
         ob_start();
         require $viewFile;
         $content = ob_get_clean();
-        $layoutFile = __DIR__ . '/../../Views/layouts/' . $layout . '.php';
+        $layoutFile = __DIR__ . '/../../App/Views/layouts/' . $layout . '.php';
 
         if (file_exists($layoutFile)) {
             require $layoutFile;
