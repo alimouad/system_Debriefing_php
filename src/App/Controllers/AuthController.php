@@ -30,10 +30,10 @@ class AuthController extends Controller
                         $redirect = '/admin/home';
                     }
                     elseif (($role == 'TEACHER')){
-                        $redirect = '/author/home';
+                        $redirect = '/teacher/home';
                     }
                     else{
-                        $redirect = '/';
+                        $redirect = '/student/home ';
                     }
                     header("Location: $redirect");
                     exit;
@@ -44,7 +44,7 @@ class AuthController extends Controller
         }
 
 
-        $this->render('Auth/login', 'authLayout', [
+        $this->render('Auth.login', [
             'title' => 'Login',
             'data' => $data
         ]);

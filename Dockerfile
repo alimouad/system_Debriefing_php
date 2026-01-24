@@ -1,9 +1,8 @@
 FROM php:8.2-apache
 
-# Enable Apache rewrite
+# 1. Enable Apache rewrite for MVC routing
 RUN a2enmod rewrite
 
-# Install system dependencies
 RUN apt-get update && apt-get install -y \
     libpq-dev \
     libzip-dev \
@@ -13,11 +12,15 @@ RUN apt-get update && apt-get install -y \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
-# Install Composer
+# 3. Install Composer
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
-# Apache config
-COPY apache.conf /etc/apache2/conf-enabled/apache.conf
-
-# Set working directory
+# 4. Set working directory
 WORKDIR /var/www/html
+
+RUN mkdir -p storage/cache && \
+    chown -R www-data:www-data storage && \
+    chmod -R 775 storage/cache
+
+# 6. Apache config
+COPY apache.conf /etc/apache2/sites-available/000-default.conf

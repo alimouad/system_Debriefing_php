@@ -6,7 +6,8 @@ use Core\Database\Database;
 use DateTime;
 use PDOException;
 
-abstract class User {
+abstract class User
+{
     protected ?int $id;
     protected string $first_name;
     protected string $last_name;
@@ -14,7 +15,8 @@ abstract class User {
     protected string $password;
     protected ?DateTime $created_at;
 
-    public function __construct(array $data) {
+    public function __construct(array $data)
+    {
         $this->id         = $data['id'] ?? null;
         $this->first_name = $data['first_name'] ?? '';
         $this->last_name  = $data['last_name'] ?? '';
@@ -27,13 +29,29 @@ abstract class User {
     abstract public function role(): string;
 
     // Getters
-    public function getId(): ?int { return $this->id; }
-    public function getFirstName(): string { return $this->first_name; }
-    public function getLastName(): string { return $this->last_name; }
-    public function getFullName(): string { return "{$this->first_name} {$this->last_name}"; }
-    public function getEmail(): string { return $this->email; }
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
+    public function getFirstName(): string
+    {
+        return $this->first_name;
+    }
+    public function getLastName(): string
+    {
+        return $this->last_name;
+    }
+    public function getFullName(): string
+    {
+        return "{$this->first_name} {$this->last_name}";
+    }
+    public function getEmail(): string
+    {
+        return $this->email;
+    }
 
-    public function save(): array {
+    public function save(): array
+    {
         try {
             $pdo = Database::getInstance();
 
@@ -53,26 +71,26 @@ abstract class User {
 
             $this->id = (int)$pdo->lastInsertId();
 
-            return []; 
-            
+            return [];
         } catch (PDOException $e) {
             return ['db' => "Database Error: " . $e->getMessage()];
         }
     }
-    public static function allWithClassroom(): array {
-    try {
-        $pdo = Database::getInstance();
-        // We use LEFT JOIN so Teachers (who have no classroom_id) still appear
-        $sql = "SELECT users.*, classrooms.name as classroom_name 
+    public static function allWithClassroom(): array
+    {
+        try {
+            $pdo = Database::getInstance();
+            // We use LEFT JOIN so Teachers (who have no classroom_id) still appear
+            $sql = "SELECT users.*, classrooms.name as classroom_name 
                 FROM users 
                 LEFT JOIN classrooms ON users.classroom_id = classrooms.id 
                 where users.role IN ('TEACHER', 'STUDENT')
                 ORDER BY users.role DESC, users.last_name ASC";
-        
-        $stmt = $pdo->query($sql);
-        return $stmt->fetchAll();
-    } catch (PDOException $e) {
-        return [];
+
+            $stmt = $pdo->query($sql);
+            return $stmt->fetchAll();
+        } catch (PDOException $e) {
+            return [];
+        }
     }
-}
 }

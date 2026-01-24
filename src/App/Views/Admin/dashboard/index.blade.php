@@ -1,3 +1,9 @@
+@extends('layouts.adminLayout')
+
+@section('title', 'Add New Classroom')
+
+@section('content')
+
 <div class="max-w-full space-y-8 animate-in fade-in slide-in-from-bottom-8 duration-1000 ease-out p-1">
     
     <section class="bg-white/70 backdrop-blur-3xl rounded-[3.5rem] p-8 shadow-[0_30px_60px_-15px_rgba(0,0,0,0.08)] border border-white/80 ring-1 ring-black/[0.01]">
@@ -118,3 +124,5 @@
     100% { left: 125%; }
 }
 </style>
+
+@endsection

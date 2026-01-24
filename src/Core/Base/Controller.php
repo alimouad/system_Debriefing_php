@@ -2,27 +2,27 @@
 
 namespace Core\Base;
 
+use eftec\bladeone\BladeOne;
+
 class Controller
 {
-    protected function render(string $view, string $layout , array $data = []): void
+
+    protected function render(string $view, array $data = []): void
     {
-        extract($data);
+        // 1. Define paths (relative to this file in Core/Base/)
+        $views = __DIR__ . '/../../App/Views';
+        $cache = __DIR__ . '/../../storage/cache';
 
-        $viewFile = __DIR__ . '/../../App/Views/' . $view . '.php';
+        try {
 
-        if (!file_exists($viewFile)) {
-            die("View not found: {$viewFile}");
-        }
-        ob_start();
-        require $viewFile;
-        $content = ob_get_clean();
-        $layoutFile = __DIR__ . '/../../App/Views/layouts/' . $layout . '.php';
+            $blade = new BladeOne($views, $cache, BladeOne::MODE_DEBUG);
 
-        if (file_exists($layoutFile)) {
-            require $layoutFile;
-        } else {
-            echo $content;
+
+            echo $blade->run($view, $data);
+
+        } catch (\Exception $e) {
+            // Handle template errors gracefully
+            die("Template Error: " . $e->getMessage());
         }
     }
 }
-

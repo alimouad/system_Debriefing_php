@@ -10,7 +10,7 @@ Class SprintController extends Controller {
 
     public function index() {
         $sprints  = Sprint::all();
-          $this->render('Admin/sprints/index', 'adminLayout', [
+          $this->render('Admin.sprints.index', [
             'sprints' => $sprints,
           ]);
     }
@@ -45,6 +45,7 @@ Class SprintController extends Controller {
             $saveResult = $sprint->save();
 
             if (empty($saveResult)) {
+                $_SESSION['success'] = "The new sprint has been launched successfully!";
                 header("Location: /admin/sprints");
                 exit;
             } else {
@@ -55,7 +56,7 @@ Class SprintController extends Controller {
     }
 
 
-    $this->render('Admin/sprints/addSprint', 'adminLayout', [
+    $this->render('Admin.sprints.addSprint', [
         'data' => $data, 
         'classrooms'=> $classrooms
     ]);

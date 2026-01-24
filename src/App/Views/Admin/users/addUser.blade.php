@@ -1,19 +1,12 @@
+
+@extends('layouts.adminLayout')
+
+@section('title', 'User Directory')
+
+@section('content')
 <div class="w-full min-h-[calc(100vh-120px)] space-y-10 animate-in fade-in slide-in-from-bottom-8 duration-1000 ease-out">
     
-    <?php if (isset($data["errors"]["db"])): ?>
-        <div class="flex items-center gap-4 p-5 rounded-[2.5rem] bg-rose-50/60 backdrop-blur-xl text-rose-600 border border-rose-100 shadow-[0_20px_40px_-15px_rgba(225,29,72,0.1)] animate-in fade-in zoom-in-95 duration-500 mb-6">
-            <div class="w-12 h-12 rounded-2xl bg-white flex items-center justify-center text-rose-500 shadow-sm">
-                <span class="material-symbols-outlined">database_off</span>
-            </div>
-            <div class="flex-1 px-2">
-                <h4 class="text-[10px] font-black uppercase tracking-[0.2em] opacity-70">Execution Failed</h4>
-                <p class="text-sm font-bold leading-relaxed"><?= htmlspecialchars($data["errors"]["db"]); ?></p>
-            </div>
-            <button onclick="this.parentElement.remove()" class="w-10 h-10 rounded-xl hover:bg-rose-100 transition-colors flex items-center justify-center">
-                <span class="material-symbols-outlined text-rose-300">close</span>
-            </button>
-        </div>
-    <?php endif; ?>
+
 
     <header class="flex flex-col md:flex-row md:items-center justify-between gap-6 px-4">
         <div class="flex items-center gap-8">
@@ -161,3 +154,5 @@ function toggleTeacherStudent(role) {
     }
 }
 </script>
+
+@endsection

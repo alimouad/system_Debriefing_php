@@ -13,7 +13,7 @@ class UsersController extends Controller {
     public function index() {
     $users = User::allWithClassroom();
     
-    $this->render('Admin/users/index', 'adminLayout', [
+    $this->render('Admin.users.index',  [
         'users' => $users
     ]);
 }
@@ -58,6 +58,7 @@ class UsersController extends Controller {
                 $saveResult = $user->save();
 
                 if (empty($saveResult)) {
+                    $_SESSION['success'] = "The new user has been created successfully!";
                     header("Location: /admin/users");
                     exit;
                 } else {
@@ -66,7 +67,7 @@ class UsersController extends Controller {
             }
         }
 
-        $this->render('Admin/users/addUser', 'adminLayout', [
+        $this->render('Admin.users.addUser', [
             'classrooms' => $classrooms,
             'data' => $data 
         ]);

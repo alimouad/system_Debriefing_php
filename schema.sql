@@ -44,6 +44,8 @@ CREATE TABLE briefs (
     estimated_duration VARCHAR(50),
     brief_type VARCHAR(20) NOT NULL CHECK (brief_type IN ('INDIVIDUAL', 'COLLECTIVE')),
     sprint_id INT NOT NULL,
+    teacher_id INT NOT NULL,    
+    FOREIGN KEY (teacher_id) REFERENCES users(id) ON DELETE CASCADE,
     CONSTRAINT fk_brief_sprint FOREIGN KEY (sprint_id) 
         REFERENCES sprints(id) ON DELETE CASCADE
 );
@@ -63,6 +65,16 @@ CREATE TABLE classroom_teacher (
     PRIMARY KEY (classroom_id, teacher_id),
     CONSTRAINT fk_ct_classroom FOREIGN KEY (classroom_id) REFERENCES classrooms(id) ON DELETE CASCADE,
     CONSTRAINT fk_ct_teacher FOREIGN KEY (teacher_id) REFERENCES users(id) ON DELETE CASCADE
+);
+
+CREATE TABLE submissions (
+    id SERIAL PRIMARY KEY,
+    brief_id INT REFERENCES briefs(id) ON DELETE CASCADE,
+    student_id INT REFERENCES users(id) ON DELETE CASCADE,
+    repository_url TEXT,
+    description TEXT,
+    submitted_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    UNIQUE(brief_id, student_id) 
 );
 
 -- 6. EVALUATIONS (The History Table)

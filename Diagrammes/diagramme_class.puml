@@ -73,6 +73,12 @@ class Skill {
     - label : string
 }
 
+class Submittion {
+    - id : int
+    - content : text
+    - submission_date : date
+}
+
 ' --- Evaluation and History ---
 class Evaluation {
     - id : int
@@ -103,6 +109,8 @@ Brief "*" -- "*" Skill : targets >
 Teacher "*" -- "*" Classroom : supervises >
 Teacher "1" -- "*" Brief : organizes >
 Student "*" -- "1" Classroom : belongs to >
+Submittion "*" -- "1" Brief : for >
+Submittion "*" -- "1" Student : by >
 
 Evaluation "*" -- "1" Student : concerns >
 Evaluation "*" -- "1" Brief : linked to >

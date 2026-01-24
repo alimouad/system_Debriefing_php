@@ -1,5 +1,11 @@
+@extends('layouts.adminLayout')
+
+@section('title', 'User Directory')
+
+@section('content')
 <div class="space-y-10 animate-in fade-in slide-in-from-bottom-8 duration-1000 ease-out">
 
+    {{-- Header & Action Bar --}}
     <header class="flex flex-col lg:flex-row lg:items-center justify-between gap-6 px-4">
         <div>
             <nav class="flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 mb-2">
@@ -7,7 +13,7 @@
                 <span class="material-symbols-outlined text-[12px]">chevron_right</span>
                 <span class="text-slate-900">User Directory</span>
             </nav>
-            <h1 class="text-3xl font-black text-slate-900 tracking-tight leading-none">Global <span class="text-transparent bg-clip-text pink-gradient">Community</span></h1>
+            <h1 class="text-4xl font-black text-slate-900 tracking-tight leading-none">Global <span class="text-transparent bg-clip-text pink-gradient">Community</span></h1>
             <p class="text-slate-400 font-medium mt-3">Overview of all active mentors and student participants.</p>
         </div>
         
@@ -25,9 +31,10 @@
         </div>
     </header>
 
+    {{-- Content Grid --}}
     <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-8 px-2">
         
-        <?php if (empty($users)): ?>
+        @if(empty($users))
             <div class="col-span-full py-32 flex flex-col items-center justify-center text-center space-y-6 bg-white/30 backdrop-blur-xl rounded-[4rem] border-2 border-dashed border-slate-200">
                 <div class="w-24 h-24 rounded-full bg-slate-100 flex items-center justify-center text-slate-300">
                     <span class="material-symbols-outlined text-5xl">group_off</span>
@@ -40,37 +47,40 @@
                     Create the first account →
                 </a>
             </div>
-        <?php else: ?>
-            <?php foreach ($users as $user): ?>
-                <?php 
+        @else
+            @foreach($users as $user)
+                @php 
                     $isTeacher = ($user['role'] === 'TEACHER'); 
-                    $accentClass = $isTeacher ? 'indigo' : 'pink';
-                ?>
-                <div class="bg-white/80 backdrop-blur-3xl rounded-[3.5rem] p-8 border border-white shadow-[0_30px_60px_-15px_rgba(0,0,0,0.05)] relative overflow-hidden group hover:shadow-2xl hover:shadow-<?= $accentClass ?>-500/10 transition-all duration-700 hover:-translate-y-2">
+                @endphp
+                
+                <div class="bg-white/80 backdrop-blur-3xl rounded-[3.5rem] p-8 border border-white shadow-[0_30px_60px_-15px_rgba(0,0,0,0.05)] relative overflow-hidden group hover:shadow-2xl transition-all duration-700 hover:-translate-y-2 {{ $isTeacher ? 'hover:shadow-indigo-500/10' : 'hover:shadow-pink-500/10' }}">
                     
+                    {{-- Role Badge --}}
                     <div class="absolute top-0 right-0 p-8">
-                        <div class="flex items-center gap-2 bg-<?= $accentClass ?>-50/80 px-4 py-1.5 rounded-full border border-<?= $accentClass ?>-100/50 backdrop-blur-sm">
-                            <span class="w-1.5 h-1.5 rounded-full bg-<?= $isTeacher ? 'indigo' : 'primary' ?> animate-pulse"></span>
-                            <span class="text-[10px] font-black text-<?= $isTeacher ? 'indigo-600' : 'primary' ?> uppercase tracking-widest">
-                                <?= $user['role'] ?>
+                        <div class="flex items-center gap-2 {{ $isTeacher ? 'bg-indigo-50/80 border-indigo-100/50' : 'bg-pink-50/80 border-pink-100/50' }} px-4 py-1.5 rounded-full border backdrop-blur-sm">
+                            <span class="w-1.5 h-1.5 rounded-full {{ $isTeacher ? 'bg-indigo-600' : 'bg-primary' }} animate-pulse"></span>
+                            <span class="text-[10px] font-black {{ $isTeacher ? 'text-indigo-600' : 'text-primary' }} uppercase tracking-widest">
+                                {{ $user['role'] }}
                             </span>
                         </div>
                     </div>
 
-                    <div class="w-16 h-16 rounded-[2rem] bg-<?= $accentClass ?>-50 text-<?= $isTeacher ? 'indigo-500' : 'primary' ?> flex items-center justify-center mb-8 group-hover:scale-110 group-hover:rotate-3 transition-all duration-500 shadow-sm border border-white">
+                    {{-- Icon Visual --}}
+                    <div class="w-16 h-16 rounded-[2rem] {{ $isTeacher ? 'bg-indigo-50 text-indigo-500' : 'bg-pink-50 text-primary' }} flex items-center justify-center mb-8 group-hover:scale-110 group-hover:rotate-3 transition-all duration-500 shadow-sm border border-white">
                         <span class="material-symbols-outlined text-4xl">
-                            <?= $isTeacher ? 'co_present' : 'person' ?>
+                            {{ $isTeacher ? 'co_present' : 'person' }}
                         </span>
                     </div>
 
+                    {{-- Member Details --}}
                     <div class="mb-10">
                         <h3 class="text-xl font-black text-slate-900 mb-1 tracking-tight leading-tight">
-                            <?= htmlspecialchars($user['first_name'] . ' ' . $user['last_name']) ?>
+                            {{ $user['first_name'] }} {{ $user['last_name'] }}
                         </h3>
-                        <p class="text-slate-400 text-xs font-bold mb-6 truncate"><?= htmlspecialchars($user['email']) ?></p>
+                        <p class="text-slate-400 text-xs font-bold mb-6 truncate">{{ $user['email'] }}</p>
                         
                         <div class="p-4 rounded-3xl bg-slate-50/50 border border-slate-100/50">
-                            <?php if (!$isTeacher): ?>
+                            @if(!$isTeacher)
                                 <div class="flex items-center gap-3">
                                     <div class="w-8 h-8 rounded-xl bg-white flex items-center justify-center text-primary shadow-sm">
                                         <span class="material-symbols-outlined text-lg">school</span>
@@ -78,11 +88,11 @@
                                     <div class="flex flex-col">
                                         <span class="text-[9px] font-black text-slate-400 uppercase tracking-widest">Classroom</span>
                                         <span class="text-xs font-bold text-slate-700 leading-none">
-                                            <?= htmlspecialchars($user['classroom_name'] ?? 'Not Enrolled') ?>
+                                            {{ $user['classroom_name'] ?? 'Not Enrolled' }}
                                         </span>
                                     </div>
                                 </div>
-                            <?php else: ?>
+                            @else
                                 <div class="flex items-center gap-3">
                                     <div class="w-8 h-8 rounded-xl bg-white flex items-center justify-center text-indigo-500 shadow-sm">
                                         <span class="material-symbols-outlined text-lg">verified_user</span>
@@ -92,25 +102,29 @@
                                         <span class="text-xs font-bold text-slate-700 leading-none">Full Faculty Access</span>
                                     </div>
                                 </div>
-                            <?php endif; ?>
+                            @endif
                         </div>
                     </div>
 
+                    {{-- Footer --}}
                     <div class="flex items-center justify-between pt-8 border-t border-slate-50">
                         <div class="flex flex-col">
                             <span class="text-[9px] font-black text-slate-400 uppercase tracking-widest">Member Since</span>
-                            <span class="text-xs font-bold text-slate-500 italic"><?= date('M Y', strtotime($user['created_at'])) ?></span>
+                            <span class="text-xs font-bold text-slate-500 italic">
+                                {{ date('M Y', strtotime($user['created_at'])) }}
+                            </span>
                         </div>
                         
                         <div class="flex gap-2">
-                            <a href="/admin/users/edit?id=<?= $user['id'] ?>" class="w-12 h-12 rounded-2xl bg-white flex items-center justify-center text-slate-400 hover:text-primary hover:shadow-xl hover:border-pink-100 border border-transparent transition-all duration-300 shadow-sm">
+                            <a href="/admin/users/edit?id={{ $user['id'] }}" class="w-12 h-12 rounded-2xl bg-white flex items-center justify-center text-slate-400 hover:text-primary hover:shadow-xl hover:border-pink-100 border border-transparent transition-all duration-300 shadow-sm">
                                 <span class="material-symbols-outlined text-xl">edit_note</span>
                             </a>
                         </div>
                     </div>
                 </div>
-            <?php endforeach; ?>
-        <?php endif; ?>
+            @endforeach
+        @endif
 
     </div>
 </div>
+@endsection

@@ -11,7 +11,7 @@ class ClassRoomController extends Controller
     {
         $classRoom = ClassRoom::getAll();
         // $classrooms = $this->model('ClassRoom')->getAllClassRooms();
-        $this->render('Admin/classroom/index','adminLayout',[
+        $this->render('Admin.classroom.index',[
             'classrooms' => $classRoom
         ]);
     }
@@ -38,6 +38,7 @@ class ClassRoomController extends Controller
             $saveResult = $classroom->create();
 
             if (empty($saveResult)) {
+                $_SESSION['success'] = "The new classroom has been created successfully!";  
                 header("Location: /admin/classroom");
                 exit;
             } else {
@@ -45,7 +46,7 @@ class ClassRoomController extends Controller
             }
         }
     }
-        $this->render('Admin/classroom/addClass','adminLayout',[
+        $this->render('Admin.classroom.addClass',[
             'data'       => $data
         ]);
     }
