@@ -113,4 +113,18 @@ class Student extends User
         // Use fetch() instead of fetchAll() because we only want one row for this student
         return $stmt->fetch(\PDO::FETCH_ASSOC) ?: [];
     }
+
+    public static function getStudentsClassRoom(int $teacher_id): array
+    {
+        $pdo = Database::getInstance();
+        $sql = "SELECT u.* FROM users u 
+                INNER JOIN classrooms c ON u.classroom_id = c.id
+                INNER JOIN classroom_teacher ct ON c.id = ct.classroom_id
+                WHERE ct.teacher_id = :teacher_id AND u.role = 'STUDENT'";
+
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute([':teacher_id' => $teacher_id]);
+
+        return $stmt->fetchAll(\PDO::FETCH_ASSOC);
+    }
 }

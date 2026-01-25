@@ -3,6 +3,7 @@
 // routes/web.php
 $router->get("/teacher/home", "TeacherController@index");
 $router->get("/teacher/briefs", "BriefsController@index");
+$router->get("/teacher/classroom", "TeacherController@classRoom");
 $router->get("/teacher/briefs/create", "BriefsController@create");
 $router->post("/teacher/briefs/create", "BriefsController@create");
 $router->get("/teacher/briefs/evaluate", "EvaluationController@index");
@@ -27,6 +28,8 @@ $router->post('/admin/users/create', "UsersController@create");
 $router->get('/admin/skills', "SkillController@index");
 $router->get('/admin/skills/create', "SkillController@create");
 $router->post('/admin/skills/create', "SkillController@create");
+$router->get('/admin/classroom/assign-teacher', "ClassRoomController@assignTeacher");
+$router->post('/admin/classroom/assign-teacher', "ClassRoomController@processAssignment");
 
 
 $router->get('/student/home', "StudentController@index");

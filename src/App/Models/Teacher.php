@@ -25,4 +25,18 @@ class Teacher extends User{
         $query->execute(["id" => $int]);
         return $query->fetchAll(PDO::FETCH_ASSOC);
     }
+
+    public static function getTeachers(){
+        $pdo = Database::getInstance();
+        $query = $pdo->prepare("select * from users where role = :role");
+        $query->execute([':role' => UserRole::TEACHER->value]);
+        return $query->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public static function getTeacherClassRoom(int $int){
+        $pdo = Database::getInstance();
+        $query = $pdo->prepare('select c.* from classrooms c inner JOIN classroom_teacher t on c.id = t.classroom_id  inner JOIN users u on t.teacher_id = u.id where u.id = :id');
+        $query->execute([':id' => $int]);
+        return $query->fetchAll(PDO::FETCH_ASSOC);
+    }
 }

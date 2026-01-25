@@ -69,4 +69,39 @@ class ClassRoom
             ];
         }
     }
+
+    public static function getClassroom(int $id)
+    {
+        $pdo = Database::getInstance();
+        $sql = "select * from classrooms where id = :id";
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute(['id' => $id]);
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+
+    public static function handleAssignment(int $classId, int $teacherId): bool
+    {
+        $pdo = Database::getInstance();
+
+        try {
+            $pdo->beginTransaction();
+
+            // 1. Remove existing assignment for this classroom
+            $deleteStmt = $pdo->prepare("DELETE FROM classroom_teacher WHERE classroom_id = ?");
+            $deleteStmt->execute([$classId]);
+
+            // 2. Insert the new assignment
+            $insertStmt = $pdo->prepare("INSERT INTO classroom_teacher (classroom_id, teacher_id) VALUES (?, ?)");
+            $insertStmt->execute([$classId, $teacherId]);
+
+            return $pdo->commit();
+        } catch (\Exception $e) {
+            if ($pdo->inTransaction()) {
+                $pdo->rollBack();
+            }
+            // Log the error for the developer
+            error_log("Assignment Error: " . $e->getMessage());
+            return false;
+        }
+    }
 }
