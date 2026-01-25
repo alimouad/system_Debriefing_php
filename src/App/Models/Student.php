@@ -127,4 +127,10 @@ class Student extends User
 
         return $stmt->fetchAll(\PDO::FETCH_ASSOC);
     }
+    public static function all(){
+        $pdo = Database::getInstance();
+        $query = $pdo->prepare("select * from users where role = :role");
+        $query->execute([':role' => 'STUDENT']);
+        return $query->fetchAll(\PDO::FETCH_ASSOC);
+    }
 }

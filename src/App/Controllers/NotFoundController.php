@@ -12,7 +12,7 @@ class NotFoundController extends Controller
         http_response_code(404);
         
         // If you have a 404 blade view:
-        return $this->render('errors.404');
+        return $this->render('404');
 
     }
 }

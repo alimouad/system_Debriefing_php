@@ -1,27 +1,34 @@
-<?php 
+<?php
 
 namespace App\Controllers;
+
 use Core\Base\Controller;
 use App\Models\ClassRoom;
 
 use App\Models\Student;
 use App\Models\Teacher;
 use App\Models\User;
+use Core\Auth\Auth;
 
 
-class UsersController extends Controller {
-    public function index() {
-    $users = User::allWithClassroom();
-    
-    $this->render('Admin.users.index',  [
-        'users' => $users
-    ]);
-}
+class UsersController extends Controller
+{
+    public function index()
+    {
+        Auth::requireRole('ADMIN');
+        $users = User::allWithClassroom();
 
-    public function create() {
+        $this->render('Admin.users.index',  [
+            'users' => $users
+        ]);
+    }
+
+    public function create()
+    {
+        Auth::requireRole('ADMIN');
         // Fetch classrooms for the student dropdown
-        $classrooms = ClassRoom::getAll(); 
-        
+        $classrooms = ClassRoom::getAll();
+
         $data = [
             'first_name'   => '',
             'last_name'    => '',
@@ -53,7 +60,7 @@ class UsersController extends Controller {
                 } else {
                     $user = new Teacher($data);
                 }
-                
+
                 // 5. Save
                 $saveResult = $user->save();
 
@@ -69,23 +76,24 @@ class UsersController extends Controller {
 
         $this->render('Admin.users.addUser', [
             'classrooms' => $classrooms,
-            'data' => $data 
+            'data' => $data
         ]);
     }
 
-    private function validateUserInputs(array $post): array {
+    private function validateUserInputs(array $post): array
+    {
         $errors = [];
         if (empty($post['first_name'])) $errors['FirstNameErr'] = 'First name is required';
         if (empty($post['last_name'])) $errors['LastNameErr'] = 'Last name is required';
         if (!filter_var($post['email'], FILTER_VALIDATE_EMAIL)) $errors['EmailErr'] = 'Valid email is required';
         if (strlen($post['password']) < 6) $errors['PassErr'] = 'Password must be at least 6 characters';
         if (empty($post['role'])) $errors['RoleErr'] = 'Please select a role';
-        
+
         // If student, check classroom
         if ($post['role'] === 'STUDENT' && empty($post['classroom_id'])) {
             $errors['ClassErr'] = 'Students must be assigned to a classroom';
         }
-        
+
         return $errors;
     }
 }

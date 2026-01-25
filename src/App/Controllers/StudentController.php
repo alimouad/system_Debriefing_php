@@ -2,14 +2,17 @@
 
 namespace App\Controllers;
 
+use App\Models\Evaluation;
 use App\Models\Submittion;
 use Core\Base\Controller;
 use App\Models\Student;
+use Core\Auth\Auth;
 
 class StudentController extends Controller
 {
     public function index()
     {
+        Auth::requireRole('STUDENT');
         $id =  $_SESSION["user_id"];
         $student = Student::getStudentDashboardData($id);
 
@@ -20,6 +23,7 @@ class StudentController extends Controller
 
     public function briefRendu()
     {
+        Auth::requireRole('STUDENT');
         $id = $_GET['id'] ?? null;
 
         $student = Student::getBriefRenduData($id);
@@ -27,7 +31,7 @@ class StudentController extends Controller
         $data = [
             'repository_url' => '',
             'description'    => '',
-            'brief_id'       => $id, 
+            'brief_id'       => $id,
             'student_id'     => $_SESSION['user_id'] ?? '',
             'errors'         => []
         ];
@@ -60,6 +64,17 @@ class StudentController extends Controller
         $this->render('Student.briefs.rendBrief', [
             'data' => $data,
             'student' => $student
+        ]);
+    }
+
+    public function getEvaluations()
+    {
+        Auth::requireRole('STUDENT');
+        $studentId = $_SESSION['user_id'];
+        $studentEvaluations = (new Evaluation())->getStudentEvaluation($studentId);
+
+        return $this->render('Student.evaluation.index', [
+            'evaluations' => $studentEvaluations
         ]);
     }
 

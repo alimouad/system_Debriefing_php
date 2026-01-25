@@ -4,12 +4,14 @@ namespace App\Controllers;
 
 use Core\Base\Controller;
 use App\Models\ClassRoom;
+use Core\Auth\Auth;
 use App\Models\Teacher;
 
 class ClassRoomController extends Controller
 {
     public function index()
     {
+        Auth::requireRole("ADMIN");
         $classRoom = ClassRoom::getAll();
         // $classrooms = $this->model('ClassRoom')->getAllClassRooms();
         $this->render('Admin.classroom.index', [
@@ -19,6 +21,7 @@ class ClassRoomController extends Controller
 
     public function create()
     {
+        Auth::requireRole("ADMIN");
         $data = [
             'name' => '',
             'year' => '',
@@ -54,6 +57,7 @@ class ClassRoomController extends Controller
 
     public function assignTeacher()
     {
+        Auth::requireRole("ADMIN");
         $id = $_GET['id'] ?? '';
         $teachers = Teacher::getTeachers();
         $classroom = ClassRoom::getClassroom($id);
@@ -64,6 +68,7 @@ class ClassRoomController extends Controller
     }
     public function processAssignment()
     {
+        Auth::requireRole("ADMIN");
         $classId = (int)$_POST['classroom_id'];
         $teacherId = (int)$_POST['teacher_id'];
 

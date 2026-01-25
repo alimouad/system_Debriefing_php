@@ -9,12 +9,14 @@ use App\Models\ClassRoom;
 use App\Models\Skill;
 use App\Models\Sprint;
 use App\Models\Teacher;
+use Core\Auth\Auth;
 use App\Models\Student;
 
 class BriefsController extends Controller {
     
     
     public function index() {
+        Auth::requireRole("TEACHER");
         $teacherBriefs = Teacher::getTeacherBriefd($_SESSION['user_id']);
 
         $this->render('Teacher.briefs.index', [
@@ -23,6 +25,7 @@ class BriefsController extends Controller {
     }
   
     public function create() {
+        Auth::requireRole("TEACHER");
         // Mock data for the form selects
         $classrooms = Classroom::getAll();
         $sprints = Sprint::all();
@@ -82,6 +85,7 @@ class BriefsController extends Controller {
 
 
     public function getStudentBriefs(){
+        
         $studentBriefs = Student::getStudentBriefs($_SESSION['user_id']);
 
         return $this->render('Student.briefs.index', [

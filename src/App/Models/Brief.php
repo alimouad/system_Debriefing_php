@@ -92,7 +92,7 @@ class Brief
         $stmt = $pdo->query($sql);
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
-    
+
     public static function getStudentBrief(int $briefId, int $studentId): ?array
     {
         $pdo = Database::getInstance();
@@ -133,5 +133,13 @@ class Brief
             'submission' => $submission ?: ['repository_url' => '', 'description' => 'No notes provided.'],
             'skills'     => $skills
         ];
+    }
+
+    public static function getActiveBriefs(int $id)
+    {
+        $pdo = Database::getInstance();
+        $stmt = $pdo->prepare("SELECT b.* FROM briefs b JOIN classroom_teacher c ON b.teacher_id = c.teacher_id WHERE b.teacher_id = ?");
+        $stmt->execute([$id]);
+        return $stmt->fetchAll(\PDO::FETCH_ASSOC) ?: [];
     }
 }

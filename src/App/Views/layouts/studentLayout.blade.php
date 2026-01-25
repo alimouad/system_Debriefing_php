@@ -38,33 +38,7 @@
     
     <div class="flex h-full w-full">
         
-        {{-- Student Sidebar --}}
-        <aside class="w-72 h-full bg-white border-r border-emerald-50 flex flex-col p-8 z-50">
-            <div class="flex items-center gap-3 mb-12 px-2">
-                <div class="w-10 h-10 emerald-gradient rounded-2xl flex items-center justify-center text-white shadow-lg shadow-emerald-200">
-                    <span class="material-symbols-outlined text-2xl font-bold">rocket_launch</span>
-                </div>
-                <span class="text-xl font-black tracking-tighter italic">Student.<span class="text-emerald-600">Hub</span></span>
-            </div>
-
-
-            {{-- Experience Points / Level Card (Gamification) --}}
-            <div class="mt-auto p-6 rounded-[2.5rem] bg-emerald-900 text-white relative overflow-hidden mb-6">
-                <div class="absolute -top-4 -right-4 w-16 h-16 bg-white/10 rounded-full blur-xl"></div>
-                <p class="text-[9px] font-black uppercase tracking-[0.2em] text-emerald-400 mb-1">Pedagogical Level</p>
-                <p class="text-lg font-black tracking-tight mb-4">Autonomous <span class="text-emerald-400">Lvl 2</span></p>
-                <div class="h-1.5 w-full bg-white/10 rounded-full overflow-hidden">
-                    <div class="h-full bg-emerald-400 w-2/3"></div>
-                </div>
-            </div>
-
-            {{-- Logout --}}
-            <a href="/logout" class="flex items-center gap-4 px-6 py-4 rounded-2xl text-slate-400 hover:text-rose-500 hover:bg-rose-50 transition-all duration-300">
-                <span class="material-symbols-outlined">logout</span>
-                <span class="text-sm font-bold">Sign Out</span>
-            </a>
-        </aside>
-
+     @include('partials.sideBarStudent')
         {{-- Main Content Area --}}
         <main class="flex-1 h-full overflow-y-auto relative scroll-smooth">
             {{-- Floating Top Navbar --}}

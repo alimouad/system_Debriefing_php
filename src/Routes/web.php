@@ -35,6 +35,7 @@ $router->post('/admin/classroom/assign-teacher', "ClassRoomController@processAss
 $router->get('/student/home', "StudentController@index");
 $router->get('/student/briefs', "BriefsController@getStudentBriefs");
 $router->get('/student/briefs/rendu', "StudentController@briefRendu");
+$router->get('/student/evaluations', "StudentController@getEvaluations");
 $router->post('/student/briefs/rendu', "StudentController@briefRendu");
 
 

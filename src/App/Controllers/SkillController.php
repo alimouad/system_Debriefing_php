@@ -1,65 +1,72 @@
-<?php 
+<?php
 
 namespace App\Controllers;
+
 use Core\Base\Controller;
 use App\Models\Skill;
+use Core\Auth\Auth;
 
 
-Class SkillController extends Controller {
+class SkillController extends Controller
+{
 
 
-    public function index() {
+    public function index()
+    {
+        Auth::requireRole("ADMIN");
         $skills = Skill::getAll();
-          $this->render('Admin.skill.index', [
+        $this->render('Admin.skill.index', [
             'skills' => $skills,
-          ]);
+        ]);
     }
 
 
 
-       public function create() {
-    // Initial data structure for the view
-    $data = [
-        'code' => '',
-        'label' => '',
-        'errors' => []
-    ];
+    public function create()
+    {
+        Auth::requireRole('ADMIN');
+        // Initial data structure for the view
+        $data = [
+            'code' => '',
+            'label' => '',
+            'errors' => []
+        ];
 
-    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-        // 1. Collect and sanitize input
-        $data['code']        = trim($_POST['code'] ?? '');
-        $data['label']  = trim($_POST['label'] ?? '');
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            // 1. Collect and sanitize input
+            $data['code']        = trim($_POST['code'] ?? '');
+            $data['label']  = trim($_POST['label'] ?? '');
 
-        // 2. Validate inputs
-        $data['errors'] = $this->validateInputs($data);
+            // 2. Validate inputs
+            $data['errors'] = $this->validateInputs($data);
 
-        if (empty($data['errors'])) {
-            $skill = new Skill($data);
-            
-            // 4. Attempt to save
-            $saveResult = $skill->save();
+            if (empty($data['errors'])) {
+                $skill = new Skill($data);
 
-            if (empty($saveResult)) {
-                $_SESSION['success'] = "The new skill has been created successfully!";
-                header("Location: /admin/skills");
-                exit;
-            } else {
-                // Database error (e.g. foreign key violation)
-                $data['errors']['db'] = $saveResult['db'];
+                // 4. Attempt to save
+                $saveResult = $skill->save();
+
+                if (empty($saveResult)) {
+                    $_SESSION['success'] = "The new skill has been created successfully!";
+                    header("Location: /admin/skills");
+                    exit;
+                } else {
+                    // Database error (e.g. foreign key violation)
+                    $data['errors']['db'] = $saveResult['db'];
+                }
             }
         }
+
+
+        $this->render('Admin.skill.addSkill', [
+            'data' => $data,
+        ]);
     }
-
-
-    $this->render('Admin.skill.addSkill', [
-        'data' => $data, 
-    ]);
-}
-     private function validateInputs(array $post): array
+    private function validateInputs(array $post): array
     {
         $errors = [];
         if (empty($post['code'])) $errors['CodeErr'] = 'Code is required';
-         if (empty($post['label'])) $errors['LabelErr'] = 'Label is required';
+        if (empty($post['label'])) $errors['LabelErr'] = 'Label is required';
         return $errors;
     }
 }

@@ -8,12 +8,14 @@ use App\Models\Teacher;
 use Core\Database\Database;
 use Core\Base\Controller;
 use App\Models\Evaluation;
+use Core\Auth\Auth;
 
 
 class EvaluationController extends Controller
 {
     public function index()
     {
+        Auth::requireRole("TEACHER");
         $id = $_GET["id"];
         $submission  = Teacher::getStudentSubmittionsByBrief($id);
 
@@ -23,6 +25,7 @@ class EvaluationController extends Controller
 
     public function showEvaluationForm()
     {
+        Auth::requireRole("TEACHER");
         $briefId = $_GET['brief_id'] ?? null;
         $studentId = $_GET['student_id'] ?? null;
 
